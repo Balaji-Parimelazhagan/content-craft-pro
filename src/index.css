@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --viola: 197, 143, 182;
+    --tacao: 246, 176, 111;
+    --light-sea-green: 18, 157, 165;
+    --iris-blue: 17, 195, 204;
+    --cyan-500: 11, 193, 189;
+    --east-side: 177, 143, 197;
+    --maya-blue: 111, 192, 246;
+    --teal-900: 8, 70, 73;
+
+    /* ... */
+  }
+}
+@font-face {
+  font-family: "Heebo";
+  src: url("./assets/font/Heebo-VariableFont_wght.ttf")
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("./assets/font/BricolageGrotesque-Variable.ttf")
+}
+
+input[type='checkbox'] {
+  --tw-ring-shadow: 0 0 #000 !important;
+}
