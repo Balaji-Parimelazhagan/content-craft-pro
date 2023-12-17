@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+#root {
+  width: 100%;
+  height: 100%;
+}
+
 @layer base {
   :root {
     --viola: 197, 143, 182;
@@ -17,12 +22,12 @@
   }
 }
 @font-face {
-  font-family: "Heebo";
-  src: url("./assets/font/Heebo-VariableFont_wght.ttf")
+  font-family: 'Heebo';
+  src: url('./assets/font/Heebo-VariableFont_wght.ttf');
 }
 @font-face {
-  font-family: "Bricolage Grotesque";
-  src: url("./assets/font/BricolageGrotesque-Variable.ttf")
+  font-family: 'Bricolage Grotesque';
+  src: url('./assets/font/BricolageGrotesque-Variable.ttf');
 }
 
 input[type='checkbox'] {
