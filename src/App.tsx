@@ -11,6 +11,10 @@ const AppRouter = () => {
       element: <AppLayout />,
       children: [
         {
+          path: '',
+          element: <Contents />,
+        },
+        {
           path: 'contents',
           element: <Contents />,
         },

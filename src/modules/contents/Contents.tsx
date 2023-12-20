@@ -36,6 +36,8 @@ const TextContents = () => {
       className="border border-gray-200 rounded-xl overflow-hidden shadow-md text-sm w-7/12"
       header={<TableHeader header="Text Contents" />}
       value={data}
+      scrollable = {true}
+      scrollHeight={'400px'}
     >
       <Column field="topic" header="Topic" bodyClassName="font-semibold" />
       <Column field="tags" header="Tags" body={TagChips} />
@@ -62,6 +64,9 @@ const DocContents = () => {
       className="border border-gray-200 rounded-xl overflow-hidden shadow-md text-sm w-5/12"
       header={<TableHeader header="Document Contents" />}
       value={data}
+      scrollable = {true}
+      scrollHeight={'400px'}
+
     >
       <Column field="topic" header="Document" bodyClassName="font-semibold" />
       <Column field="tags" header="Tags" body={TagChips} />

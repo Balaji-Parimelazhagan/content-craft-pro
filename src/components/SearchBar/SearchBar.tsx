@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { BsSearch, BsX } from 'react-icons/bs'
 import './SearchBar.css'
 
-const SearchBar = ({ onSearch, maxWidth, showSearchTerms }: ISearchBarProps) => {
+const SearchBar = ({ onSearch, maxWidth, showSearchTerms=false, searchTag }: ISearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState<string[]>([])
 
@@ -39,7 +39,7 @@ const SearchBar = ({ onSearch, maxWidth, showSearchTerms }: ISearchBarProps) => 
         <input
           className="w-full border-2 rounded-lg border-gray-400"
           type="text"
-          placeholder="Type and press Enter..."
+          placeholder={searchTag}
           value={searchTerm}
           onChange={handleInputChange}
           onKeyDown={handleAddSearchTerm}
@@ -72,5 +72,6 @@ export default SearchBar
 interface ISearchBarProps {
   onSearch: (param: string[]) => void
   maxWidth?: boolean
-  showSearchTerms: boolean
+  showSearchTerms?: boolean
+  searchTag: string
 }
