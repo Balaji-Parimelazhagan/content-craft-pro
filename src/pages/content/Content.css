@@ -1,0 +1,15 @@
+.p-fileupload-choose {
+  display: flex;
+  flex-direction: column;
+  background: #f3fbfd;
+  border: 1px solid #c3edf5;
+  padding: 25px;
+  color: #129ba3;
+}
+
+.thumnail-edit .p-fileupload-choose {
+  padding: 8px;
+  border-radius: 50%;
+  background: #129ba3;
+  color: #c3edf5;
+}

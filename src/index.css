@@ -9,6 +9,10 @@
   max-width: none;
 }
 
+div {
+  background-color: white;
+}
+
 @layer base {
   :root {
     --viola: 197, 143, 182;
@@ -42,11 +46,27 @@ input[type='checkbox'] {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
   border-radius: 6px;
+}
+
+input {
+  --tw-ring-shadow: 0 0 #000 !important;
+  --tw-ring-color: white;
+  outline: none;
+}
+
+::placeholder {
+  font-style: italic !important;
+  font-weight: 600 !important;
+  color: rgba(8, 145, 178, 0.6) !important;
+}
+
+.p-focus {
+  box-shadow: none;
 }

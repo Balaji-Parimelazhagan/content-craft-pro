@@ -26,4 +26,58 @@ export const APP_CONSTANTS = {
     /^.*(?=.{8,})((?=.*[ !"#$%&'()*+,-.:;<=>?@[\]^_`{|}~]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
 }
 
+export const DEFAULT_CONTENT = {
+  id: 0,
+  title: '',
+  tags: [],
+  jist: '',
+  content: '',
+  isLiked: false,
+  likes: 0,
+  isDisliked: false,
+  dislikes: 0,
+  isBookmarked: false,
+  views: 0,
+  thumbnail: '',
+  verifiedBy: 3,
+  createdBy: 1,
+  createdAt: '',
+  comments: [
+    {
+      id: 1,
+      commentedBy: 'Balaji',
+      commentedAt: '12/12/2023',
+      content: 'Hi Hello',
+    },
+  ],
+  history: [
+    {
+      id: 1,
+      version: 1,
+      updatedBy: 'Balaji',
+      updatedAt: '12/12/2023',
+      content: {
+        title: '',
+        tags: [],
+        jist: '',
+        content: '',
+        thumbnail: '',
+      },
+    },
+    {
+      id: 2,
+      version: 2,
+      updatedBy: 'Ashok',
+      updatedAt: '13/12/2023',
+      content: {
+        title: '',
+        tags: [],
+        jist: '',
+        content: '',
+        thumbnail: '',
+      },
+    },
+  ],
+}
+
 export const IS_MOCK = true

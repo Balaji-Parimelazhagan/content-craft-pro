@@ -1,0 +1,26 @@
+.p-autocomplete {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.p-autocomplete-multiple-container {
+  margin: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.p-autocomplete-multiple-container:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.p-autocomplete-token {
+  font-size: 12px;
+  padding: 5px 5px;
+  border: 1px solid #55baea;
+}
+
+#tagsInput {
+  font-size: 12px;
+  padding: 0 !important;
+}

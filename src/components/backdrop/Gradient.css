@@ -1,0 +1,10 @@
+.gradinet {
+  opacity: 0.3;
+  background: linear-gradient(
+    159deg,
+    rgb(var(--viola)) -6.81%,
+    rgb(var(--tacao)) 42.64%,
+    rgb(var(--light-sea-green)) 75.02%
+  );
+  filter: blur(700px);
+}

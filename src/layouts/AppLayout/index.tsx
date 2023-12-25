@@ -1,19 +1,20 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Header from '../../components/Header/Header'
-import Footer from '../../components/Footer/Footer'
+import Header from '../../components/header/Header'
 
 const AppLayout: React.FC = () => {
-  const handleHeaderSearch = () => {
-
-  }
+  const handleHeaderSearch = () => {}
   return (
-    <div className=' flex w-full h-full relative justify-center items-center'>
-      <Header onHeaderSearch={handleHeaderSearch} headerSubTitle='Information is wealth...' searchTag='Search...' headerTitle='Content-Craft Pro'/>
-      <div className="h-[70%]">
+    <div className=" flex w-full h-full bg-transparent relative justify-center items-end">
+      <Header
+        onHeaderSearch={handleHeaderSearch}
+        searchTag="Search..."
+        headerTitle="Content-Craft Pro"
+      />
+      <div className="h-[90%] w-full bg-transparent">
         <Outlet />
       </div>
-      <Footer searchTag='Search draft...' />
+      {/* <Footer searchTag='Search draft...' /> */}
     </div>
   )
 }

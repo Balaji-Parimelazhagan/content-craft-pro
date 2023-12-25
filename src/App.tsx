@@ -1,8 +1,9 @@
 import { useRoutes } from 'react-router-dom'
 import './App.css'
 import AppLayout from './layouts/AppLayout'
-import SignUp from './pages/SignUp'
-import Contents from './modules/contents/Contents'
+import Contents from './pages/contentList/Contents'
+import Content from './pages/content/Content'
+import Login from './pages/login/Login'
 
 const AppRouter = () => {
   const routes = useRoutes([
@@ -18,11 +19,22 @@ const AppRouter = () => {
           path: 'contents',
           element: <Contents />,
         },
+        {
+          path: 'content',
+          children: [
+            { path: '', element: <Content /> },
+            { path: ':contentId', element: <Content /> },
+          ],
+        },
       ],
     },
     {
-      path: '/login',
-      element: <SignUp />,
+      path: '',
+      element: <Login />,
+    },
+    {
+      path: 'login',
+      element: <Login />,
     },
   ])
 

@@ -1,0 +1,39 @@
+.p-editor-content {
+  border: none !important;
+  overflow-y: auto;
+  padding-bottom: 50px;
+  color: rgba(8, 145, 178, 0.8) !important;
+}
+
+.ql-toolbar {
+  border: none !important;
+  padding: 0px !important;
+  position: relative;
+}
+
+.ql-formats {
+  background: lightcyan !important;
+  padding: 5px !important;
+  border-radius: 4px;
+  border: 2px solid #129ba3;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  visibility: hidden;
+  z-index: 10;
+}
+
+.ql-formats button svg {
+  filter: invert(98%) sepia(5%) saturate(245%) hue-rotate(140deg) brightness(116%) contrast(100%);
+}
+
+.ql-editor {
+  padding: 0 10px !important;
+  color: rgb(107, 114, 128) !important;
+}
+
+.ql-editor.ql-blank::before {
+  font-style: italic !important;
+  font-weight: 600 !important;
+  color: rgba(8, 145, 178, 0.6) !important;
+}
