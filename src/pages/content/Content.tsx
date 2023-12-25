@@ -1,24 +1,33 @@
 import { useFormik } from 'formik'
 import { Toast } from 'primereact/toast'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { AiOutlineDislike, AiOutlineLike, AiTwotoneDislike, AiTwotoneLike } from 'react-icons/ai'
-import { MdOutlineRemoveRedEye, MdOutlineVerified } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
+import AiButton from '../../components/aiButton/AiButton'
 import QuillEditor from '../../components/quillEditor/QuillEditor'
 import Tags from '../../components/tags/Tags'
 import { ContentContext } from '../../hooks/contentContext'
+import {
+  generateJist,
+  generateTags,
+  generateTitle,
+  improviseContent,
+} from '../../services/api/aiService'
+import { convertHtmlToString } from '../../utils/utils'
 import { DEFAULT_CONTENT } from './../../constants/appConstants'
 import './Content.css'
+import Impressions from './impressions/Impressions'
+import AiInfo from './info/AiInfo'
+import ContentInfo from './info/ContentInfo'
 import SidePanel from './sidePanel/SidePanel'
 import Thumbnail from './thumbnail/Thumbnail'
 
 const Content = () => {
+  const navigate = useNavigate()
   const { contentId } = useParams()
   const toast: any = useRef(null)
   const [content, setContent] = useState(DEFAULT_CONTENT)
-  const [isEditing, setIsEditing] = useState(true)
-  const navigate = useNavigate()
   const [contents, dispatchContent] = useContext(ContentContext)
+  const [isEditing, setIsEditing] = useState(true)
 
   useEffect(() => {
     if (contentId) {
@@ -53,6 +62,30 @@ const Content = () => {
     },
   })
 
+  const populateJist = async () => {
+    const jist = await generateJist(formik.values.content)
+    formik.setFieldValue('jist', jist)
+    setContent(formik.values)
+  }
+
+  const populateTitle = async () => {
+    const title = await generateTitle(formik.values.content)
+    formik.setFieldValue('title', title)
+    setContent(formik.values)
+  }
+
+  const populateTags = async () => {
+    const tags = await generateTags(formik.values.content)
+    formik.setFieldValue('tags', tags)
+    setContent(formik.values)
+  }
+
+  const enhanceContent = async () => {
+    const content = await improviseContent(formik.values.content)
+    formik.setFieldValue('content', content)
+    setContent(formik.values)
+  }
+
   return (
     <>
       <Toast ref={toast} />
@@ -62,11 +95,19 @@ const Content = () => {
       >
         <div className="w-11/12 bg-transparent space-x-4 flex" id="pdfContent">
           <div className="w-1/5 bg-transparent h-full flex flex-col space-y-3 rounded-lg">
-            <div className="h-72 border rounded-lg p-2 flex flex-col text-start shadow">
+            <div className="h-72 border rounded-lg p-2 flex flex-col text-start shadow relative">
               <span className="text-cyan-600 text-lg ms-1 font-semibold mb-2">Tags: </span>
               <Tags formik={formik} placeholder="Tag your content" readOnly={!isEditing} />
+              {isEditing && (
+                <AiButton
+                  formik={formik}
+                  label="Generate"
+                  clickHandler={populateTags}
+                  isDisabled={convertHtmlToString(formik.values.content).length <= 300}
+                />
+              )}
             </div>
-            <div className="h-72 border rounded-lg p-2 flex flex-col text-start shadow">
+            <div className="h-72 border rounded-lg p-2 flex flex-col text-start shadow relative">
               <span className="text-cyan-600 text-lg ms-1 font-semibold mb-2">Jist:</span>
               <QuillEditor
                 name="jist"
@@ -77,14 +118,18 @@ const Content = () => {
                 toolbarOptions={jistToolbar}
                 readOnly={!isEditing}
               />
+              {isEditing && (
+                <AiButton
+                  formik={formik}
+                  label="Generate"
+                  clickHandler={populateJist}
+                  isDisabled={convertHtmlToString(formik.values.content).length <= 300}
+                />
+              )}
             </div>
-            <div className="h-32 border rounded-lg p-2 flex flex-col text-start shadow">
-              <span className="text-cyan-600 m-2 text-sm ms-1 font-semibold mb-1">Author:</span>
-              <span className="text-cyan-600 m-2 text-sm ms-1 font-semibold mb-1">Created on:</span>
-              <span className="text-cyan-600 m-2 text-sm ms-1 font-semibold mb-1">Updated on:</span>
-            </div>
+            {!isEditing ? <ContentInfo formik={formik} /> : <AiInfo formik={formik} />}
           </div>
-          <div className="w-4/5 p-2 border rounded-lg shadow max-h-full overflow-auto">
+          <div className="w-4/5 p-2 relative border rounded-lg shadow max-h-full overflow-auto">
             <div className="w-full flex mx-auto">
               <div className=" w-3/4 relative inline-block">
                 <QuillEditor
@@ -97,64 +142,14 @@ const Content = () => {
                   toolbarOptions={titleToolbar}
                   readOnly={!isEditing}
                 />
-                {!isEditing && (
-                  <div className="flex space-x-4 absolute left-3 bottom-3">
-                    <div className="flex">
-                      <MdOutlineRemoveRedEye size={25} className="text-gray-400" />
-                      <span className="ms-1 font-semibold text-gray-500">
-                        {formik.values.views}
-                      </span>
-                    </div>
-                    <div className="flex">
-                      {formik.values.isDisliked ? (
-                        <AiTwotoneDislike
-                          size={25}
-                          className="cursor-pointer text-red-500"
-                          onClick={() => {
-                            formik.setFieldValue('isDisliked', false)
-                          }}
-                        />
-                      ) : (
-                        <AiOutlineDislike
-                          size={25}
-                          className="cursor-pointer text-red-500"
-                          onClick={() => {
-                            formik.setFieldValue('isLiked', false)
-                            formik.setFieldValue('isDisliked', true)
-                          }}
-                        />
-                      )}
-                      <span className="ms-1 font-semibold text-gray-500">
-                        {formik.values.dislikes}
-                      </span>
-                    </div>
-                    <div className="flex">
-                      {formik.values.isLiked ? (
-                        <AiTwotoneLike
-                          size={25}
-                          className="cursor-pointer text-green-500"
-                          onClick={() => {
-                            formik.setFieldValue('isLiked', false)
-                          }}
-                        />
-                      ) : (
-                        <AiOutlineLike
-                          size={25}
-                          className="cursor-pointer text-green-500"
-                          onClick={() => {
-                            formik.setFieldValue('isLiked', true)
-                            formik.setFieldValue('isDisliked', false)
-                          }}
-                        />
-                      )}
-                      <span className="ms-1 font-semibold text-gray-500">
-                        {formik.values.likes}
-                      </span>
-                    </div>
-                    {formik.values.verifiedBy && (
-                      <MdOutlineVerified size={25} className="text-green-600" />
-                    )}
-                  </div>
+                {!isEditing && <Impressions formik={formik} />}
+                {isEditing && (
+                  <AiButton
+                    formik={formik}
+                    label="Generate"
+                    clickHandler={populateTitle}
+                    isDisabled={convertHtmlToString(formik.values.content).length <= 300}
+                  />
                 )}
               </div>
               <Thumbnail formik={formik} isEditing={isEditing} />
@@ -168,6 +163,14 @@ const Content = () => {
               toolbarOptions={contentToolbar}
               readOnly={!isEditing}
             />
+            {isEditing && (
+              <AiButton
+                formik={formik}
+                label="Improvise"
+                clickHandler={enhanceContent}
+                isDisabled={convertHtmlToString(formik.values.content).length <= 300}
+              />
+            )}
           </div>
           <SidePanel formik={formik} isEditing={isEditing} setIsEditing={setIsEditing} />
         </div>

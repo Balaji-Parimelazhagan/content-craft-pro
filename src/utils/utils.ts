@@ -12,3 +12,10 @@ export const DownloadHtmlAsPdf = (rootElementId: string, downloadFileName: strin
     })
   }
 }
+
+export const convertHtmlToString = (html: string) => {
+  const tempElement = document.createElement('div')
+  tempElement.innerHTML = html
+  const textContent = tempElement.textContent || tempElement.innerText
+  return textContent
+}

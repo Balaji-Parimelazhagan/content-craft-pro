@@ -6,22 +6,31 @@ import { FaRegSave, FaHistory } from 'react-icons/fa'
 import { GrEdit } from 'react-icons/gr'
 import { IoClose } from 'react-icons/io5'
 import { MdOutlineDownloading } from 'react-icons/md'
-import { DownloadHtmlAsPdf } from '../../../utils/utils'
+import { DownloadHtmlAsPdf, convertHtmlToString } from '../../../utils/utils'
+import { RiMagicLine } from 'react-icons/ri'
+import { doAiMagic } from '../../../services/api/aiService'
 
 const SidePanel = ({ formik, isEditing, setIsEditing }: any) => {
   const [sidePanel, setSidePanel] = useState('')
   const actionClass = sidePanel ? 'flex-row space-x-4' : 'flex-col space-y-4'
   return (
-    <div className="flex flex-col bg-transparent space-y-20">
+    <div className="flex flex-col items-center bg-transparent space-y-20">
       <div
         className={`flex h-max w-max rounded-md  py-3 px-3 bg-cyan-600 text-white ${actionClass}`}
       >
         {isEditing ? (
           <button type="submit">
-            <FaRegSave size={23} className="cursor-pointer" />
+            <FaRegSave size={22} className="cursor-pointer" />
           </button>
         ) : (
           <GrEdit size={23} className="cursor-pointer" onClick={() => setIsEditing(true)} />
+        )}
+        {isEditing && (
+          <RiMagicLine
+            size={25}
+            className="text-amber-400 cursor-pointer"
+            onClick={() => fillContent(formik)}
+          />
         )}
         {!isEditing && (
           <MdOutlineDownloading
@@ -30,7 +39,7 @@ const SidePanel = ({ formik, isEditing, setIsEditing }: any) => {
             onClick={() => DownloadHtmlAsPdf('pdfContent', 'content')}
           />
         )}
-        <FaHistory size={23} className="cursor-pointer" onClick={() => setSidePanel('history')} />
+        <FaHistory size={20} className="cursor-pointer" onClick={() => setSidePanel('history')} />
         <BiMessageRoundedDetail
           size={24}
           className="cursor-pointer"
@@ -113,6 +122,16 @@ const History = ({ formik, setSidePanel }: any) => {
       </div>
     </div>
   )
+}
+
+const fillContent = async (formik: any) => {
+  if (convertHtmlToString(formik.values.content).length > 300) {
+    const { content, jist, tags, title } = await doAiMagic(formik.values.content)
+    formik.setFieldValue('content', content)
+    formik.setFieldValue('jist', jist)
+    formik.setFieldValue('tags', tags)
+    formik.setFieldValue('title', title)
+  }
 }
 
 export default SidePanel
