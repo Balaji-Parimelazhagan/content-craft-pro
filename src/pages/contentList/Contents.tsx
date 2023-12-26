@@ -3,23 +3,81 @@ import { Card } from 'primereact/card'
 import { Image } from 'primereact/image'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { PiFileDoc } from 'react-icons/pi'
 import { TextContentContext } from '../../hooks/textContentContext'
 import { UserContext } from '../../hooks/userContext'
 import './Contents.css'
+import { FaPenNib, FaSearch } from 'react-icons/fa'
 const Contents = () => {
   const [textContents, dispatchContent] = useContext(TextContentContext)
   const [users, dispatchUsers] = useContext(UserContext)
   return (
     <div className="w-full h-full overflow-auto px-40 pb-20">
-      <div className="text-gray-500 my-5 text-3xl text-start font-black">Top Picks For You</div>
+      <HomeActions />
+      <div className="text-gray-500 my-5 text-3xl text-start font-extrabold">Top Picks For You</div>
       <TextContents textContents={textContents.slice(0, 5)} />
-      <div className="text-gray-500 my-5 mt-10 text-3xl text-start font-black">
+      <div className="text-gray-500 my-5 mt-10 text-3xl text-start font-extrabold">
         Trending Contents{' '}
       </div>
       <TextContents textContents={textContents.slice(0, 5)} />
-      <div className="text-gray-500 my-5 mt-10 text-3xl text-start font-black">Author picks</div>
+      <div className="text-gray-500 my-5 mt-10 text-3xl text-start font-extrabold">
+        Author picks
+      </div>
       <Authors authors={users.slice(0, 5)} />
       {/* <DocContents /> */}
+    </div>
+  )
+}
+
+const HomeActions = () => {
+  const navigate = useNavigate()
+  return (
+    <div className="flex justify-center my-5">
+      <Card
+        title={
+          <div className="text-cyan-600 font-semibold text-lg bg-transparent">
+            Craft <br />
+            Text Content
+          </div>
+        }
+        header={
+          <div className="flex justify-center h-24 items-center bg-transparent">
+            <FaPenNib className="text-cyan-600 mt-8" size={40} />
+          </div>
+        }
+        className="w-48 flex flex-col justify-center items-center shadow border border-cyan-600 mx-5 bg-cyan-50 overflow-hidden"
+        onClick={() => navigate(`/content`)}
+      ></Card>
+      <Card
+        title={
+          <div className="text-cyan-600 font-semibold text-lg bg-transparent">
+            Craft <br />
+            Doc Content
+          </div>
+        }
+        header={
+          <div className="flex justify-center h-24 items-center bg-transparent">
+            <PiFileDoc className="text-cyan-600 mt-8" size={40} />
+          </div>
+        }
+        className="w-48 flex flex-col justify-center items-center shadow border border-cyan-600 bg-cyan-50 mx-5 overflow-hidden"
+        onClick={() => navigate(`/content`)}
+      ></Card>
+      <Card
+        title={
+          <div className="text-cyan-600 font-semibold text-lg bg-transparent">
+            Explore <br />
+            Contents
+          </div>
+        }
+        header={
+          <div className="flex justify-center h-24 items-center bg-transparent">
+            <FaSearch className="text-cyan-600 mt-8" size={40} />
+          </div>
+        }
+        className="w-48 flex flex-col justify-center items-center shadow border border-cyan-600 bg-cyan-50 mx-5 overflow-hidden"
+        onClick={() => navigate(`/search`)}
+      ></Card>
     </div>
   )
 }
@@ -62,7 +120,6 @@ const Authors = ({ authors }: any) => {
   return (
     <div className="flex flex-wrap gap-3 justify-center">
       {authors.map((author: any) => {
-        console.log(author)
         const userInitial = author.username.charAt(0)
         return (
           <Card

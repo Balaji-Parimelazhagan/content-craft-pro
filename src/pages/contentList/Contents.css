@@ -4,4 +4,17 @@
 
 .p-card-body {
   padding: 15px 8px;
+  background-color: transparent;
+}
+
+.p-card-footer {
+  background-color: transparent;
+}
+
+.p-card-title {
+  background-color: transparent;
+}
+
+.p-card-header {
+  background-color: transparent;
 }

@@ -25,17 +25,17 @@ const Content = () => {
   const navigate = useNavigate()
   const { contentId } = useParams()
   const toast: any = useRef(null)
-  const [content, setContent] = useState(DEFAULT_CONTENT)
   const [textContents, dispatchContent] = useContext(TextContentContext)
+  const [content, setContent] = useState(DEFAULT_CONTENT)
   const [isEditing, setIsEditing] = useState(true)
 
   useEffect(() => {
     if (contentId) {
       const content = textContents.find((content: any) => content.id === contentId)
       if (content) {
-        setContent(content)
-        console.log(content)
+        console.log(contentId, textContents, content)
         setIsEditing(false)
+        setContent(content)
       } else {
         // navigate('/contents')
       }
@@ -58,7 +58,7 @@ const Content = () => {
         dispatchContent(data)
         showSuccessToast()
         formik.resetForm()
-        setIsEditing(false)
+        navigate('/contents')
       }
     },
   })

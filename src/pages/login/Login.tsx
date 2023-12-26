@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { FaArrowRight } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../hooks/globalContext'
+import { login } from '../../services/api/loginService'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -11,16 +12,18 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: 'balaji',
+      userId: 'balaji',
       password: 'test@123',
     },
-    onSubmit: (data) => {
-      console.log(data)
-      //TODO: make API call and set authenticated user in context
-      setCurrentUser(data)
-      navigate('/contents')
+    onSubmit: async (data) => {
+      const user = await login(data)
+      if (user) {
+        setCurrentUser(data)
+        navigate('/contents')
+      }
     },
   })
+
   return (
     <div className="w-full h-full bg-transparent flex justify-center items-center">
       <div className="text-center bg-transparent">
@@ -32,13 +35,13 @@ const Login = () => {
           <img src="src/assets/logo.png" className="mx-auto" width={100} height={40} />
           <div className="p-float-label bg-transparent mt-5">
             <InputText
-              id="username"
-              value={formik.values.username}
+              id="userId"
+              value={formik.values.userId}
               className="border-2 border-cyan-100 rounded focus:border-cyan-200 focus:shadow"
               onChange={formik.handleChange}
               autoFocus
             />
-            <label htmlFor="username font-semibold">Username</label>
+            <label htmlFor="userId font-semibold">Username</label>
           </div>
           <div className="p-float-label bg-transparent mt-10">
             <InputText

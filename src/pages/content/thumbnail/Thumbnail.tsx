@@ -9,7 +9,7 @@ const Thumbnail = ({ formik, isEditing }: any) => {
       <Image
         src={formik.values.thumbnail}
         alt="Image"
-        className="w-44 h-44 flex items-center justify-center"
+        className="w-44 h-44 flex items-center justify-center overflow-hidden"
         preview
       />
       {isEditing && (

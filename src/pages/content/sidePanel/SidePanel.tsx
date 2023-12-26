@@ -49,7 +49,7 @@ const SidePanel = ({ formik, isEditing, setIsEditing }: any) => {
           onClick={() => setSidePanel('comments')}
         />
         {!isEditing && (
-          <div className="flex">
+          <div className="flex bg-transparent">
             {formik.values.isBookmarked ? (
               <BsFillBookmarkHeartFill
                 size={23}

@@ -67,7 +67,7 @@ export const DEFAULT_CONTENTs = {
   ],
 }
 
-export const DEFAULT_CONTENT = {
+export const DEFAULT_FILLED_CONTENT = {
   id: '6589e59fcc5ff27fa297f716',
   title: 'React: Efficient UI Development Framework.',
   tags: ['React', 'Frontend'],
@@ -135,4 +135,25 @@ export const DEFAULT_CONTENT = {
   deleted: false,
 }
 
-export const IS_MOCK = true
+export const DEFAULT_CONTENT = {
+  id: '',
+  title: '',
+  tags: [],
+  jist: '',
+  content: '',
+  author: '',
+  thumbnail: '',
+  verifiedBy: 0,
+  views: 0,
+  likes: 0,
+  dislikes: 0,
+  comments: [],
+  history: [],
+  createdBy: '',
+  createdAt: new Date(),
+  updatedAt: null,
+  active: true,
+  deleted: false,
+}
+
+export const IS_MOCK = false
