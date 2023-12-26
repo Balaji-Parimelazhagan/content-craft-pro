@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { IS_MOCK } from '../../constants/appConstants'
-import textContents from '../../mocks/textContents'
+import users from '../../mocks/users'
 
 const api = axios.create({
   baseURL: 'https://96ca-2406-7400-ca-e0a0-d50c-c78f-8b5f-a2d5.ngrok-free.app/api/',
@@ -9,10 +9,10 @@ const api = axios.create({
   },
 })
 
-export const getAllTextContents = async () => {
+export const getAllUsers = async () => {
   if (IS_MOCK) {
-    return textContents
+    return users
   }
-  const response = await api.get('text-wikis')
+  const response = await api.get('users')
   return response.data
 }

@@ -1,14 +1,17 @@
 import { Timeline } from 'primereact/timeline'
 import { useState } from 'react'
-import { BiMessageRoundedDetail, BiBell } from 'react-icons/bi'
-import { BsFillBookmarkHeartFill, BsBookmarkHeart } from 'react-icons/bs'
-import { FaRegSave, FaHistory } from 'react-icons/fa'
+import { AiOutlineDislike, AiOutlineLike, AiOutlineSend } from 'react-icons/ai'
+import { BiBell, BiMessageRoundedDetail } from 'react-icons/bi'
+import { BsBookmarkHeart, BsFillBookmarkHeartFill } from 'react-icons/bs'
+import { FaHistory, FaRegSave } from 'react-icons/fa'
 import { GrEdit } from 'react-icons/gr'
 import { IoClose } from 'react-icons/io5'
 import { MdOutlineDownloading } from 'react-icons/md'
-import { DownloadHtmlAsPdf, convertHtmlToString } from '../../../utils/utils'
 import { RiMagicLine } from 'react-icons/ri'
 import { doAiMagic } from '../../../services/api/aiService'
+import { DownloadHtmlAsPdf, convertHtmlToString } from '../../../utils/utils'
+import { InputText } from 'primereact/inputtext'
+import { LuSend } from 'react-icons/lu'
 
 const SidePanel = ({ formik, isEditing, setIsEditing }: any) => {
   const [sidePanel, setSidePanel] = useState('')
@@ -81,21 +84,41 @@ const Comments = ({ formik, setSidePanel }: any) => {
         {formik.values.comments.map((comment: any) => {
           return (
             <div
-              className="text-start rounded-lg bg-cyan-50 border border-gray-300 text-gray-500 text-sm p-3 pb-8 relative"
+              className="text-start rounded-lg bg-cyan-50 border border-gray-300 my-2 text-gray-500 text-sm p-5 pb-10 relative"
               key={comment.id}
             >
               {comment.content}
-              <div className="absolute bottom-0 right-1 p-1">
+              {comment.updatedAt && (
+                <div className="absolute top-1 right-1 bg-transparent text-gray-400 text-xs font-semibold">
+                  Edited
+                </div>
+              )}
+              <div className="absolute bg-transparent bottom-0 right-1 p-1">
                 <small className="font-bold text-gray-500">
-                  {comment.commentedBy}
+                  {comment.commenterName}
                   <span className="italic font-semibold ms-1 text-gray-400">
-                    at {comment.commentedAt}
+                    at {new Date(comment.createdAt).toISOString().split('T')[0]}
                   </span>
                 </small>
+              </div>
+              <div className="absolute bg-transparent flex items-center bottom-0 left-1 p-1">
+                <AiOutlineLike className="text-green-500" size={15} />
+                <span className="font-semibold ms-1 text-sm text-gray-400">{comment.likes}</span>
+                <AiOutlineDislike className="text-red-500 ms-2" size={15} />
+                <span className="font-semibold ms-1 text-sm text-gray-400">{comment.dislikes}</span>
               </div>
             </div>
           )
         })}
+        <div className="flex items-center mx-auto rounded mt-2 border border-cyan-600 bg-cyan-50">
+          <InputText
+            id="username"
+            className="border rounded border-cyan-600 focus:shadow "
+            // onChange={() => formik.comments.push(e)}
+            autoFocus
+          />
+          <LuSend size={25} className="text-cyan-600 font-semibold mx-2 " />
+        </div>
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import AiButton from '../../components/aiButton/AiButton'
 import QuillEditor from '../../components/quillEditor/QuillEditor'
 import Tags from '../../components/tags/Tags'
-import { ContentContext } from '../../hooks/contentContext'
+import { TextContentContext } from '../../hooks/textContentContext'
 import {
   generateJist,
   generateTags,
@@ -26,20 +26,21 @@ const Content = () => {
   const { contentId } = useParams()
   const toast: any = useRef(null)
   const [content, setContent] = useState(DEFAULT_CONTENT)
-  const [contents, dispatchContent] = useContext(ContentContext)
+  const [textContents, dispatchContent] = useContext(TextContentContext)
   const [isEditing, setIsEditing] = useState(true)
 
   useEffect(() => {
     if (contentId) {
-      const content = contents.find((content: any) => content.id === contentId)
+      const content = textContents.find((content: any) => content.id === contentId)
       if (content) {
         setContent(content)
+        console.log(content)
         setIsEditing(false)
       } else {
-        navigate('/contents')
+        // navigate('/contents')
       }
     }
-  }, [contentId])
+  }, [contentId, textContents])
 
   const showSuccessToast = () => {
     toast?.current &&

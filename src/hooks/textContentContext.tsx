@@ -1,11 +1,11 @@
 import { createContext, useReducer } from 'react'
 
-export const ContentContext = createContext<any[]>([])
+export const TextContentContext = createContext<any[]>([])
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
-    case 'ADD':
-      return [...state, action.data]
+    case 'ADD_ALL':
+      return [...action.data]
     case 'DELETE':
       return state.filter((content: any) => content.id !== action.data.id)
     case 'EDIT':
@@ -15,12 +15,12 @@ const reducer = (state: any, action: any) => {
   }
 }
 
-export const ContentProvider = ({ children }: any) => {
-  const [contents, dispatchContent] = useReducer(reducer, [])
+export const TextContentProvider = ({ children }: any) => {
+  const [textContents, dispatchTextContents] = useReducer(reducer, [])
 
   return (
-    <ContentContext.Provider value={[contents, dispatchContent]}>
+    <TextContentContext.Provider value={[textContents, dispatchTextContents]}>
       {children}
-    </ContentContext.Provider>
+    </TextContentContext.Provider>
   )
 }

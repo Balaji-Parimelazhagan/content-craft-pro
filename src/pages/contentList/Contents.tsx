@@ -1,93 +1,107 @@
-import { PrimeIcons } from 'primereact/api'
-import { Button } from 'primereact/button'
-import { Column } from 'primereact/column'
-import { DataTable } from 'primereact/datatable'
-import { Dialog } from 'primereact/dialog'
-import { Menu } from 'primereact/menu'
-import { useRef, useState } from 'react'
-import { getDocContents, getTextContents } from '../../services/api/contentService'
-import { IContent } from '../../types/app.types'
+import { Avatar } from 'primereact/avatar'
+import { Card } from 'primereact/card'
+import { Image } from 'primereact/image'
+import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { TextContentContext } from '../../hooks/textContentContext'
+import { UserContext } from '../../hooks/userContext'
 import './Contents.css'
 const Contents = () => {
+  const [textContents, dispatchContent] = useContext(TextContentContext)
+  const [users, dispatchUsers] = useContext(UserContext)
   return (
-    <div className="w-full flex space-x-8">
-      <TextContents />
-      <DocContents />
+    <div className="w-full h-full overflow-auto px-40 pb-20">
+      <div className="text-gray-500 my-5 text-3xl text-start font-black">Top Picks For You</div>
+      <TextContents textContents={textContents.slice(0, 5)} />
+      <div className="text-gray-500 my-5 mt-10 text-3xl text-start font-black">
+        Trending Contents{' '}
+      </div>
+      <TextContents textContents={textContents.slice(0, 5)} />
+      <div className="text-gray-500 my-5 mt-10 text-3xl text-start font-black">Author picks</div>
+      <Authors authors={users.slice(0, 5)} />
+      {/* <DocContents /> */}
     </div>
   )
 }
 
-const TableHeader = ({ header }: { header: string }) => (
-  <div className="flex items-center justify-between p-0 ">
-    <span className="text-xl text-900 font-bold text-cyan-600">{header.toUpperCase()}</span>
-    <Button icon="pi pi-refresh" className="text-cyan-500" rounded raised />
-  </div>
-)
-
-const TextContents = () => {
-  const { data, isLoading } = getTextContents()
-  const optionsTemplate = (content: IContent) => <TableOptions rowData={content} />
-
-  return isLoading ? (
-    <div className="pi pi-spinner"></div>
-  ) : (
-    <DataTable
-      removableSort
-      className="border border-gray-200 rounded-xl overflow-hidden shadow-md text-sm w-7/12"
-      header={<TableHeader header="Text Contents" />}
-      value={data}
-      scrollable = {true}
-      scrollHeight={'400px'}
-    >
-      <Column field="topic" header="Topic" bodyClassName="font-semibold" />
-      <Column field="tags" header="Tags" body={TagChips} />
-      <Column field="jist" header="Jist" body={JistTemplate} />
-      <Column header="Impressions" body={Impressions} />
-      <Column header="Options" body={optionsTemplate} />
-    </DataTable>
+const TextContents = ({ textContents }: any) => {
+  const navigate = useNavigate()
+  return (
+    <div className="flex flex-wrap gap-3 justify-center">
+      {textContents.map((content: any) => {
+        return (
+          <Card
+            key={content.id}
+            title={<div className="w-60 text-sm ">{content.title}</div>}
+            subTitle={
+              <div className="flex justify-center w-60 mb-3">
+                <TagChips content={content} />
+              </div>
+            }
+            footer={<Impressions content={content} />}
+            header={
+              <div className="flex justify-center items-center">
+                <Image
+                  src={content.thumbnail}
+                  alt="Image"
+                  className="w-20 flex justify-center items-center h-20 mx-auto"
+                />
+              </div>
+            }
+            className="w-64 relative shadow border border-gray-200 overflow-hidden"
+            onClick={() => navigate(`/content/${content.id}`)}
+          ></Card>
+        )
+      })}
+    </div>
   )
 }
 
-const JistTemplate = (content: IContent) => {
-  return <div className="max-w-xs max-h-50 truncate">{content.jist}</div>
-}
-
-const DocContents = () => {
-  const { data, isLoading } = getDocContents()
-  const optionsTemplate = (content: IContent) => <TableOptions rowData={content} />
-
-  return isLoading ? (
-    <div className="pi pi-spinner"></div>
-  ) : (
-    <DataTable
-      removableSort
-      className="border border-gray-200 rounded-xl overflow-hidden shadow-md text-sm w-5/12"
-      header={<TableHeader header="Document Contents" />}
-      value={data}
-      scrollable = {true}
-      scrollHeight={'400px'}
-
-    >
-      <Column field="topic" header="Document" bodyClassName="font-semibold" />
-      <Column field="tags" header="Tags" body={TagChips} />
-      <Column header="Impressions" body={Impressions} />
-      <Column header="Options" body={optionsTemplate} />
-    </DataTable>
+const Authors = ({ authors }: any) => {
+  const navigate = useNavigate()
+  return (
+    <div className="flex flex-wrap gap-3 justify-center">
+      {authors.map((author: any) => {
+        console.log(author)
+        const userInitial = author.username.charAt(0)
+        return (
+          <Card
+            key={author.id}
+            title={<div className="w-60 text-sm mb-5">{author.username}</div>}
+            subTitle={
+              <span className="rounded-lg border border-cyan-600 text-cyan-600 bg-cyan-50 font-semibold py-1 px-2">
+                {author.userId}
+              </span>
+            }
+            header={
+              <Avatar
+                label={userInitial}
+                size="large"
+                shape="circle"
+                className="bg-cyan-50 border-2 border-cyan-600 text-cyan-600 mt-5"
+              />
+            }
+            className="w-64 relative shadow border border-gray-200 overflow-hidden"
+            onClick={() => navigate(`/author/${author.id}`)}
+          ></Card>
+        )
+      })}
+    </div>
   )
 }
 
-const TagChips = (content: IContent) =>
-  content.tags.map((tag) => (
-    <span
-      className="bg-cyan-100 text-cyan-600 p-1 text-xs font-semibold px-2 ms-1 rounded-md"
+const TagChips = ({ content }: any) =>
+  content.tags.map((tag: any) => (
+    <div
+      className="w-max h-max bg-cyan-100 text-cyan-600 p-1 text-xs font-semibold px-2 ms-1 mt-1 rounded-md"
       key={tag}
     >
       {tag}
-    </span>
+    </div>
   ))
 
-const Impressions = (content: IContent) => (
-  <div className="flex items-center text-xs">
+const Impressions = ({ content }: any) => (
+  <div className="absolute bottom-5 left-0 w-full flex justify-center text-xs">
     <i className="pi pi-eye me-1 text-gray-400" />
     <span className="text-gray-600">{content.views}</span>
     <i className="pi pi-thumbs-up me-1 ms-4 text-green-400" />
@@ -96,28 +110,5 @@ const Impressions = (content: IContent) => (
     <span className="text-red-400">{content.dislikes}</span>
   </div>
 )
-
-const TableOptions = ({ rowData }: { rowData: any }) => {
-  const optionsMenu = useRef<Menu>(null)
-  const [showHistory, setshowHistory] = useState(false)
-  const options = [
-    {
-      items: [{ label: 'History', icon: PrimeIcons.HISTORY }],
-      command: () => setshowHistory(true),
-    },
-  ]
-  return (
-    <>
-      <Button
-        icon="pi pi-ellipsis-h"
-        onClick={(event) => optionsMenu?.current && optionsMenu?.current.toggle(event)}
-      />
-      <Menu model={options} popup ref={optionsMenu} />
-      <Dialog header="Flex Scroll" visible={showHistory} modal onHide={() => setshowHistory(false)}>
-        {rowData.topic}
-      </Dialog>
-    </>
-  )
-}
 
 export default Contents

@@ -5,12 +5,12 @@ export const UserContext = createContext<any[]>([])
 const reducer = (state: any, action: any) => {
   switch (action.type) {
     case 'ADD_ALL':
-      return [...state, action.data]
+      return [...action.data]
   }
 }
 
 export const UserProvider = ({ children }: any) => {
-  const [users, dispatchUser] = useReducer(reducer, [])
+  const [users, dispatchUsers] = useReducer(reducer, [])
 
-  return <UserContext.Provider value={[users, dispatchUser]}>{children}</UserContext.Provider>
+  return <UserContext.Provider value={[users, dispatchUsers]}>{children}</UserContext.Provider>
 }

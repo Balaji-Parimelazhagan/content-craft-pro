@@ -2,8 +2,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PrimeReactProvider } from 'primereact/api'
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { ContentProvider } from './hooks/contentContext'
+import { TextContentProvider } from './hooks/textContentContext'
 import { GlobalContextProvider } from './hooks/globalContext'
+import { UserProvider } from './hooks/userContext'
 
 type Props = {
   children: React.ReactNode
@@ -15,9 +16,11 @@ const AppProvider: React.FC<Props> = (props: Props) => {
     <Router>
       <QueryClientProvider client={queryClient}>
         <GlobalContextProvider>
-          <ContentProvider>
-            <PrimeReactProvider>{props.children}</PrimeReactProvider>
-          </ContentProvider>
+          <UserProvider>
+            <TextContentProvider>
+              <PrimeReactProvider>{props.children}</PrimeReactProvider>
+            </TextContentProvider>
+          </UserProvider>
         </GlobalContextProvider>
       </QueryClientProvider>
     </Router>

@@ -13,18 +13,18 @@ const Impressions = ({ formik }: any) => {
           <AiTwotoneDislike
             size={25}
             className="cursor-pointer text-red-500"
-            onClick={() => {
-              formik.setFieldValue('isDisliked', false)
-            }}
+            // onClick={() => {
+            //   formik.setFieldValue('isDisliked', false)
+            // }}
           />
         ) : (
           <AiOutlineDislike
             size={25}
             className="cursor-pointer text-red-500"
-            onClick={() => {
-              formik.setFieldValue('isLiked', false)
-              formik.setFieldValue('isDisliked', true)
-            }}
+            // onClick={() => {
+            //   formik.setFieldValue('isLiked', false)
+            //   formik.setFieldValue('isDisliked', true)
+            // }}
           />
         )}
         <span className="ms-1 font-semibold text-gray-500">{formik.values.dislikes}</span>
@@ -34,18 +34,18 @@ const Impressions = ({ formik }: any) => {
           <AiTwotoneLike
             size={25}
             className="cursor-pointer text-green-500"
-            onClick={() => {
-              formik.setFieldValue('isLiked', false)
-            }}
+            // onClick={() => {
+            //   formik.setFieldValue('isLiked', false)
+            // }}
           />
         ) : (
           <AiOutlineLike
             size={25}
             className="cursor-pointer text-green-500"
-            onClick={() => {
-              formik.setFieldValue('isLiked', true)
-              formik.setFieldValue('isDisliked', false)
-            }}
+            // onClick={() => {
+            //   formik.setFieldValue('isLiked', true)
+            //   formik.setFieldValue('isDisliked', false)
+            // }}
           />
         )}
         <span className="ms-1 font-semibold text-gray-500">{formik.values.likes}</span>
